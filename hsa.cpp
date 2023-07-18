@@ -10,10 +10,10 @@
 // Does the dlopen/dlsym calls as part of the call to hsa_init
 //
 //===----------------------------------------------------------------------===//
+#include "impl/hsa.h"
+#include "impl/hsa_ext_amd.h"
 
-#include "dlwrap.h"
-#include "hsa.h"
-#include "hsa_ext_amd.h"
+#include "impl/dlwrap.h"
 
 #include <dlfcn.h>
 #include <stdio.h>
