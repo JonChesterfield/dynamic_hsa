@@ -11,12 +11,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "llvm/Support/DynamicLibrary.h"
-
-#include "Debug.h"
 #include "dlwrap.h"
 #include "hsa.h"
 #include "hsa_ext_amd.h"
+
+#include <dlfcn.h>
+#include <stdio.h>
+
 #include <memory>
 
 DLWRAP_INITIALIZE()
@@ -74,34 +75,25 @@ DLWRAP_FINALIZE()
 #define DYNAMIC_HSA_PATH "libhsa-runtime64.so"
 #endif
 
-#ifndef TARGET_NAME
-#error "Missing TARGET_NAME macro"
-#endif
-#ifndef DEBUG_PREFIX
-#define DEBUG_PREFIX "Target " GETNAME(TARGET_NAME) " RTL"
-#endif
-
 static bool checkForHSA() {
   // return true if dlopen succeeded and all functions found
 
   const char *HsaLib = DYNAMIC_HSA_PATH;
-  std::string ErrMsg;
-  auto DynlibHandle = std::make_unique<llvm::sys::DynamicLibrary>(
-      llvm::sys::DynamicLibrary::getPermanentLibrary(HsaLib, &ErrMsg));
-  if (!DynlibHandle->isValid()) {
-    DP("Unable to load library '%s': %s!\n", HsaLib, ErrMsg.c_str());
+  void *DynLibHandle = dlopen(HsaLib, RTLD_NOW);
+  if (!DynLibHandle) {
+    fprintf(stderr, "Unable to load library '%s': %s!\n", HsaLib, dlerror());
     return false;
   }
 
   for (size_t I = 0; I < dlwrap::size(); I++) {
     const char *Sym = dlwrap::symbol(I);
 
-    void *P = DynlibHandle->getAddressOfSymbol(Sym);
+    void *P = dlsym(DynLibHandle, Sym);
     if (P == nullptr) {
-      DP("Unable to find '%s' in '%s'!\n", Sym, HsaLib);
+      fprintf(stderr, "Unable to find '%s' in '%s'!\n", Sym, HsaLib);
       return false;
     }
-    DP("Implementing %s with dlsym(%s) -> %p\n", Sym, Sym, P);
+    fprintf(stderr, "Implementing %s with dlsym(%s) -> %p\n", Sym, Sym, P);
 
     *dlwrap::pointer(I) = P;
   }
