@@ -74,11 +74,13 @@
 //
 // DLWRAP_INITIALIZE() declares static functions:
 #define DLWRAP_INITIALIZE()                                                    \
+  namespace {                                                                  \
   namespace dlwrap {                                                           \
   static size_t size();                                                        \
   static const char *symbol(size_t); /* get symbol name in [0, size()) */      \
   static void **                                                               \
       pointer(size_t); /* get pointer to function pointer in [0, size()) */    \
+  }                                                                            \
   }
 
 // DLWRAP_FINALIZE() implements the functions from DLWRAP_INITIALIZE
@@ -86,6 +88,7 @@
 
 // Implementation details follow.
 
+namespace {
 namespace dlwrap {
 
 // Extract return / argument types from address of function symbol
@@ -136,6 +139,7 @@ template <size_t Requested, size_t Required> constexpr void verboseAssert() {
 }
 
 } // namespace dlwrap
+} // namespace
 
 #define DLWRAP_INSTANTIATE(SYM_DEF, SYM_USE, ARITY)                            \
   DLWRAP_INSTANTIATE_##ARITY(SYM_DEF, SYM_USE,                                 \
@@ -157,6 +161,7 @@ template <size_t Requested, size_t Required> constexpr void verboseAssert() {
 #define DLWRAP_COMMON(SYMBOL, ARITY)                                           \
   DLWRAP_INC();                                                                \
   DLWRAP_SYMBOL(SYMBOL, DLWRAP_ID() - 1);                                      \
+  namespace {                                                                  \
   namespace dlwrap {                                                           \
   struct SYMBOL##_Trait : public dlwrap::trait<decltype(&SYMBOL)> {            \
     using T = dlwrap::trait<decltype(&SYMBOL)>;                                \
@@ -167,6 +172,7 @@ template <size_t Requested, size_t Required> constexpr void verboseAssert() {
       return reinterpret_cast<T::FunctionType>(P);                             \
     }                                                                          \
   };                                                                           \
+  }                                                                            \
   }
 
 #define DLWRAP_IMPL(SYMBOL, ARITY)                                             \
