@@ -11,10 +11,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "impl/dlwrap.h"
+#include "dynamic_hsa_impl/dlwrap.h"
 
-#include "impl/hsa.h"
-#include "impl/hsa_ext_amd.h"
+#include "dynamic_hsa_impl/hsa.h"
+#include "dynamic_hsa_impl/hsa_ext_amd.h"
 
 #include <dlfcn.h>
 #include <stdio.h>
