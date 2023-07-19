@@ -93,7 +93,7 @@ static bool checkForHSA() {
       fprintf(stderr, "Unable to find '%s' in '%s'!\n", Sym, HsaLib);
       return false;
     }
-    fprintf(stderr, "Implementing %s with dlsym(%s) -> %p\n", Sym, Sym, P);
+    // fprintf(stderr, "Implementing %s with dlsym(%s) -> %p\n", Sym, Sym, P);
 
     *dlwrap::pointer(I) = P;
   }
