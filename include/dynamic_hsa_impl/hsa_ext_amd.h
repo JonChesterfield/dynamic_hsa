@@ -64,43 +64,43 @@ typedef enum hsa_amd_agent_info_s {
   HSA_AMD_AGENT_INFO_TIMESTAMP_FREQUENCY = 0xA016,
 } hsa_amd_agent_info_t;
 
-hsa_status_t hsa_amd_memory_pool_get_info(hsa_amd_memory_pool_t memory_pool,
+static hsa_status_t hsa_amd_memory_pool_get_info(hsa_amd_memory_pool_t memory_pool,
                                           hsa_amd_memory_pool_info_t attribute,
                                           void *value);
 
-hsa_status_t hsa_amd_agent_iterate_memory_pools(
+static hsa_status_t hsa_amd_agent_iterate_memory_pools(
     hsa_agent_t agent,
     hsa_status_t (*callback)(hsa_amd_memory_pool_t memory_pool, void *data),
     void *data);
 
-hsa_status_t hsa_amd_memory_pool_allocate(hsa_amd_memory_pool_t memory_pool,
+static hsa_status_t hsa_amd_memory_pool_allocate(hsa_amd_memory_pool_t memory_pool,
                                           size_t size, uint32_t flags,
                                           void **ptr);
 
-hsa_status_t hsa_amd_memory_pool_free(void *ptr);
+static hsa_status_t hsa_amd_memory_pool_free(void *ptr);
 
-hsa_status_t hsa_amd_memory_async_copy(void *dst, hsa_agent_t dst_agent,
+static hsa_status_t hsa_amd_memory_async_copy(void *dst, hsa_agent_t dst_agent,
                                        const void *src, hsa_agent_t src_agent,
                                        size_t size, uint32_t num_dep_signals,
                                        const hsa_signal_t *dep_signals,
                                        hsa_signal_t completion_signal);
 
-hsa_status_t hsa_amd_agent_memory_pool_get_info(
+static hsa_status_t hsa_amd_agent_memory_pool_get_info(
     hsa_agent_t agent, hsa_amd_memory_pool_t memory_pool,
     hsa_amd_agent_memory_pool_info_t attribute, void *value);
 
-hsa_status_t hsa_amd_agents_allow_access(uint32_t num_agents,
+static hsa_status_t hsa_amd_agents_allow_access(uint32_t num_agents,
                                          const hsa_agent_t *agents,
                                          const uint32_t *flags,
                                          const void *ptr);
 
-hsa_status_t hsa_amd_memory_lock(void* host_ptr, size_t size,
+static hsa_status_t hsa_amd_memory_lock(void* host_ptr, size_t size,
                                 hsa_agent_t* agents, int num_agent,
                                 void** agent_ptr);
 
-hsa_status_t hsa_amd_memory_unlock(void* host_ptr);
+static hsa_status_t hsa_amd_memory_unlock(void* host_ptr);
 
-hsa_status_t hsa_amd_memory_fill(void *ptr, uint32_t value, size_t count);
+static hsa_status_t hsa_amd_memory_fill(void *ptr, uint32_t value, size_t count);
 
 typedef enum hsa_amd_event_type_s {
   HSA_AMD_GPU_MEMORY_FAULT_EVENT = 0,
@@ -122,7 +122,7 @@ typedef struct hsa_amd_event_s {
 typedef hsa_status_t (*hsa_amd_system_event_callback_t)(
     const hsa_amd_event_t *event, void *data);
 
-hsa_status_t
+static hsa_status_t
 hsa_amd_register_system_event_handler(hsa_amd_system_event_callback_t callback,
                                       void *data);
 
@@ -151,7 +151,7 @@ typedef struct hsa_amd_pointer_info_s {
   size_t sizeInBytes;
 } hsa_amd_pointer_info_t;
 
-hsa_status_t hsa_amd_pointer_info(const void* ptr,
+static hsa_status_t hsa_amd_pointer_info(const void* ptr,
                                           hsa_amd_pointer_info_t* info,
                                           void* (*alloc)(size_t),
                                           uint32_t* num_agents_accessible,
