@@ -13,7 +13,9 @@ set_target_properties(hsa-runtime64::hsa-runtime64 PROPERTIES
   )
 
 list(APPEND _IMPORT_CHECK_TARGETS hsa-runtime64::hsa-runtime64 )
-list(APPEND _IMPORT_CHECK_FILES_FOR_hsa-runtime64::hsa-runtime64 "${_IMPORT_PREFIX}/lib/libhsa-runtime64.so.1.7.0" )
+
+# file isn't going to exist, don't check for it
+# list(APPEND _IMPORT_CHECK_FILES_FOR_hsa-runtime64::hsa-runtime64 "${_IMPORT_PREFIX}/lib/libhsa-runtime64.so.1.7.0" )
 
 # Commands beyond this point should not need to know the version.
 set(CMAKE_IMPORT_FILE_VERSION)
